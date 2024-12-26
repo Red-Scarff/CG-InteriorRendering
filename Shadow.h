@@ -1,4 +1,4 @@
-/* Variable controlling various rendering modes. */
+
 static int stencilShadow = 1, offsetShadow = 1;
 static int renderShadow = 1, FloorShadow = 1;
 
@@ -25,12 +25,11 @@ enum {
 	C,
 	D
 };
-
-/* Create a matrix that will project the desired shadow. */
+//阴影矩阵
 void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat lightpos[4]) {
 	GLfloat dot;
 
-	/* Find dot product between light position vector and ground plane normal. */
+	
 	dot = groundplane[X] * lightpos[X] +
 		  groundplane[Y] * lightpos[Y] +
 		  groundplane[Z] * lightpos[Z] +
@@ -58,11 +57,11 @@ void shadowMatrix(GLfloat shadowMat[4][4], GLfloat groundplane[4], GLfloat light
 
 }
 
-/* Find the plane equation given 3 points. */
+//计算投影平面
 void findPlane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]) {
 	GLfloat vec0[3], vec1[3];
 
-	/* Need 2 vectors to find cross product. */
+	
 	vec0[X] = v1[X] - v0[X];
 	vec0[Y] = v1[Y] - v0[Y];
 	vec0[Z] = v1[Z] - v0[Z];
@@ -71,7 +70,7 @@ void findPlane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]) {
 	vec1[Y] = v2[Y] - v0[Y];
 	vec1[Z] = v2[Z] - v0[Z];
 
-	/* find cross product to get A, B, and C of plane equation */
+	
 	plane[A] = vec0[Y] * vec1[Z] - vec0[Z] * vec1[Y];
 	plane[B] = -(vec0[X] * vec1[Z] - vec0[Z] * vec1[X]);
 	plane[C] = vec0[X] * vec1[Y] - vec0[Y] * vec1[X];
@@ -79,7 +78,7 @@ void findPlane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]) {
 	plane[D] = -(plane[A] * v0[X] + plane[B] * v0[Y] + plane[C] * v0[Z]);
 }
 
-/* Enumerants for refering to display lists. */
+
 typedef enum {
 	RESERVED,
 	BODY_SIDE,
