@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>  
-#include "body.h"
+#include "model.h"
 #include "Camera.h"
 #include "Shadow.h"
 #include "Light.h"
@@ -202,7 +202,7 @@ void drawScene() {
     if (reportSpeed) {
         glFinish();
         end = glutGet(GLUT_ELAPSED_TIME);
-        printf("Speed %.3g frames/sec (%d ms)\n", 100.0 / (end - start), end - start);
+        printf("帧速率 %.3g FPS (%d ms)\n", 100.0 / (end - start), end - start);
     }
 
     glutSwapBuffers();  // 将3D场景发送到屏幕

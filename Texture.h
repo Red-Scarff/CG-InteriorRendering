@@ -1,6 +1,6 @@
-#include "imageloader.h"  // 包含图像加载器的头文件
-#include <assert.h>       // 包含断言库，用于调试
-#include <fstream>        // 包含文件流库，用于文件操作
+#include "imageloader.h" 
+#include <assert.h>       
+#include <fstream>       
 
 using namespace std;
 
@@ -89,7 +89,7 @@ Image::~Image() {
 }
 
 namespace {
-    // 将4字节字符数组转换为整数（小端序）
+    // 将4字节字符数组转换为整数
     int toInt(const char* bytes) {
         return (int)(
             ((unsigned char)bytes[3] << 24) |

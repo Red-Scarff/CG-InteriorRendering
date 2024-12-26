@@ -73,10 +73,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="body.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="imageloader.h" />
     <ClInclude Include="Light.h" />

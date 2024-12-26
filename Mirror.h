@@ -13,62 +13,66 @@ void drawObjectsforMirror() {
 }
 
 void drawMirrors() {
-	GLint buffers = GL_NONE;	//get current color buffer from being drawn
-	glGetIntegerv(GL_DRAW_BUFFER, &buffers);	// set the clear value
+    GLint buffers = GL_NONE; // 用于存储当前的颜色缓冲区
+    glGetIntegerv(GL_DRAW_BUFFER, &buffers); // 获取当前的颜色缓冲区
 
-	glClearStencil(0x00);	// clear the stencil buffer
-	glEnable(GL_STENCIL_TEST);
-	glColorMask(0, 0, 0, 0); //Disable drawing colors to the screen
-	// always pass the stencil test
+    glClearStencil(0x00); // 设置模板缓冲区的清除值为0
+    glEnable(GL_STENCIL_TEST); // 启用模板测试
+    glColorMask(0, 0, 0, 0); // 禁用颜色写入（不绘制颜色到屏幕）
 
-	glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);	// disable drawing to the color buffer	
-	glStencilFunc(GL_ALWAYS, 1, 0xffffffff);	// set the operation to modify the stencil buffer
+    // 设置模板操作：总是通过模板测试，并用1替换模板缓冲区中的值
+    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE); // 设置模板操作为替换
+    glStencilFunc(GL_ALWAYS, 1, 0xffffffff); // 总是通过模板测试，并将模板缓冲区中的值设置为1
 
-	//this would be the stencil mask-->
-	glDisable(GL_DEPTH_TEST);
-	glBegin(GL_QUADS);
-	//back wall
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-roomSize, -2.0f, -roomSize);
-	glVertex3f(roomSize, -2.0f, -roomSize);
-	glVertex3f(roomSize, 8.0f, -roomSize);
-	glVertex3f(-roomSize, 8.0f, -roomSize);
-	glEnd();
+    // 禁用深度测试，开始绘制模板掩码
+    glDisable(GL_DEPTH_TEST);
+    glBegin(GL_QUADS);
 
-	//added on june 5th
-	glBegin(GL_QUADS);
-	////Frontwall
-	glVertex3f(-roomSize, 8.0f, roomSize);
-	glVertex3f(roomSize, 8.0f, roomSize);
-	glVertex3f(roomSize, -2.0f, roomSize);
-	glVertex3f(-roomSize, -2.0f, roomSize);
-	glEnd();
-	////////////////////////////////////////////////
 
-	// reenable drawing to color buffer
-	glDrawBuffer((GLenum)buffers);
+    glNormal3f(0.0f, 0.0f, 1.0f); // 设置法线向量
+    glVertex3f(-roomSize, -2.0f, -roomSize); // 设置顶点坐标
+    glVertex3f(roomSize, -2.0f, -roomSize);
+    glVertex3f(roomSize, 8.0f, -roomSize);
+    glVertex3f(-roomSize, 8.0f, -roomSize);
+    glEnd();
 
-	glColorMask(1, 1, 1, 1); //Enable drawing colors to the screen
-	glStencilFunc(GL_EQUAL, 1, 0xffffffff); 		// draw only where the stencil buffer == 1
+    glBegin(GL_QUADS);
+    glVertex3f(-roomSize, 8.0f, roomSize);
+    glVertex3f(roomSize, 8.0f, roomSize);
+    glVertex3f(roomSize, -2.0f, roomSize);
+    glVertex3f(-roomSize, -2.0f, roomSize);
+    glEnd();
+    ////////////////////////////////////////////////
 
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);	// make stencil buffer read only
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// clear the color and depth buffers
+    // 重新启用颜色写入
+    glDrawBuffer((GLenum)buffers); // 恢复之前的颜色缓冲区
+    glColorMask(1, 1, 1, 1); // 启用颜色写入
 
-	glEnable(GL_DEPTH_TEST);
-	glPushMatrix();	// draw the mirror image
+    // 设置模板测试：仅在模板缓冲区值为1的地方绘制
+    glStencilFunc(GL_EQUAL, 1, 0xffffffff); // 仅在模板缓冲区值为1的地方通过测试
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // 设置模板操作为只读（不修改模板缓冲区）
 
-	//this method works however when we move out of the room we see reflections to the back of it aswell
-	for (float k = 2.0f; k < 20; k = k + 2) {
-		// invert image about xy plane
-		glScalef(1.0f, 1.0f, -1.0f);
-		glTranslatef(0.0f, 0.0f, k*roomSize);
-		drawObjectsforMirror();
-	}
+    // 清除颜色缓冲区和深度缓冲区
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glPopMatrix();
+    // 启用深度测试，开始绘制镜像
+    glEnable(GL_DEPTH_TEST);
+    glPushMatrix(); // 保存当前矩阵状态
 
-	glDisable(GL_STENCIL_TEST);	// disable the stencil buffer
-	glDrawBuffer(GL_NONE);	// disable drawing to the color buffer
+    // 绘制镜像图像
+    // 通过多次缩放和平移，生成镜像效果
+    for (float k = 2.0f; k < 20; k = k + 2) {
+        glScalef(1.0f, 1.0f, -1.0f); 
+        glTranslatef(0.0f, 0.0f, k * roomSize); 
+        drawObjectsforMirror(); 
+    }
 
-	glDrawBuffer((GLenum)buffers);
+    glPopMatrix(); // 恢复矩阵状态
+
+    // 禁用模板测试和颜色写入
+    glDisable(GL_STENCIL_TEST); // 禁用模板测试
+    glDrawBuffer(GL_NONE); // 禁用颜色写入
+
+    // 恢复之前的颜色缓冲区
+    glDrawBuffer((GLenum)buffers);
 }

@@ -614,14 +614,13 @@ void bk2() {
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
 
     glEnd();
-    glPopMatrix(); // 2
+    glPopMatrix(); 
 
-    ///////////////top cover////////
-    glPushMatrix(); // 3
-    glTranslatef(-1.0f, -2.0f + book2Height + book12Thickness, 2.0f); // move up to lie above bottom cover
+   //封面
+    glPushMatrix(); 
+    glTranslatef(-1.0f, -2.0f + book2Height + book12Thickness, 2.0f);
     glRotatef(ang2, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
-    // bottom
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -630,7 +629,7 @@ void bk2() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight, bookLength);
-    // front
+    // 前
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -639,7 +638,7 @@ void bk2() {
     glVertex3f(bookWidth, bookHeight, bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
-    // back
+    // 后
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
     glTexCoord2f(_max, _min);
@@ -648,7 +647,7 @@ void bk2() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    // right
+    // 右
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -657,7 +656,7 @@ void bk2() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    // left
+    // 左
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -668,14 +667,15 @@ void bk2() {
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
 
     glEnd();
-    glPopMatrix(); // 3
-    ////////////////////binding//////
-    glPushMatrix(); // 5
+    glPopMatrix(); 
+    
+    // 书页
+    glPushMatrix(); 
     glTranslatef(-1.0f, -2.0f + book2Height, 2.0f);
     glRotatef(ang2, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
 
-    // front
+    // 前
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -684,7 +684,7 @@ void bk2() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book12Thickness, bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, bookLength);
-    // back
+    // 后
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, -bookLength);
     glTexCoord2f(_max, _min);
@@ -693,7 +693,7 @@ void bk2() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book12Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, -bookLength);
-    // left
+    // 左
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -702,7 +702,7 @@ void bk2() {
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, bookLength);
-    // right
+    // 右
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -711,7 +711,7 @@ void bk2() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book12Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth, bookHeight + bookThickness + book12Thickness, bookLength);
-    // top
+    // 顶
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -721,17 +721,16 @@ void bk2() {
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book12Thickness, -bookLength);
     glEnd();
-    glPopMatrix(); // 5
+    glPopMatrix();
 }
 
 void bk3() {
-    glPushMatrix(); // 2
-    glTranslatef(-1.0f, -2.0f + book3Height, 2.0f); // move to lie on the left corner of the table
+    glPushMatrix(); 
+    glTranslatef(-1.0f, -2.0f + book3Height, 2.0f); 
     glRotatef(ang3, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);
-    /////////////bottom cover///
-    // bottom
+   
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -740,7 +739,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight, bookLength);
-    // top
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -749,7 +748,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
-    // front
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -758,7 +757,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
-    //back
+   
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
     glTexCoord2f(_max, _min);
@@ -767,7 +766,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    //right
+   
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -776,7 +775,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    //left
+   
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -787,14 +786,13 @@ void bk3() {
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
 
     glEnd();
-    glPopMatrix();//2
+    glPopMatrix();
 
-    ///////////////top cover////////
-    glPushMatrix(); //3
-    glTranslatef(-1.0f, -2.0f + book3Height + book3Thickness, 2.0f);// move up to lie above bottom cover
+    glPushMatrix(); 
+    glTranslatef(-1.0f, -2.0f + book3Height + book3Thickness, 2.0f);
     glRotatef(ang3, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
-    // bottom
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -803,7 +801,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight, bookLength);
-    //front
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -812,7 +810,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
-    //back
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
     glTexCoord2f(_max, _min);
@@ -821,7 +819,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    //right
+
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -830,7 +828,7 @@ void bk3() {
     glVertex3f(bookWidth, bookHeight, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    //left
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -841,14 +839,14 @@ void bk3() {
     glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
 
     glEnd();
-    glPopMatrix();  //3
-    ////////////////////binding//////
-    glPushMatrix();//5
+    glPopMatrix();  
+    
+    glPushMatrix();
     glTranslatef(-1.0f, -2.0f + book3Height, 2.0f);
     glRotatef(ang3, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
 
-    //front
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -857,7 +855,7 @@ void bk3() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book3Thickness, bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, bookLength);
-    //back
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, -bookLength);
     glTexCoord2f(_max, _min);
@@ -866,7 +864,7 @@ void bk3() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book3Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, -bookLength);
-    //left
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -875,7 +873,7 @@ void bk3() {
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, bookLength);
-    //right
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight, bookLength);
     glTexCoord2f(_max, _min);
@@ -884,7 +882,7 @@ void bk3() {
     glVertex3f(-bookWidth, bookHeight + bookThickness + book3Thickness, -bookLength);
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth, bookHeight + bookThickness + book3Thickness, bookLength);
-    //top
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, bookLength);
     glTexCoord2f(_max, _min);
@@ -894,17 +892,18 @@ void bk3() {
     glTexCoord2f(_min, _max);
     glVertex3f(-bookWidth - bookB, bookHeight + bookThickness + book3Thickness, -bookLength);
     glEnd();
-    glPopMatrix();//5
+    glPopMatrix();
 }
 
+//绘制书的侧面
 void pgs() {
-    /////////pages of book 1
-    glPushMatrix(); //4
-    glTranslatef(-1.0f, -2.0f + bookThickness, 2.0f);// move to lie between covers
+    
+    glPushMatrix(); 
+    glTranslatef(-1.0f, -2.0f + bookThickness, 2.0f);
     glRotatef(ang1, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glNormal3f(0, 1, 0);
-    //front
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book12Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -913,7 +912,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, bookLength - 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, bookLength - 0.03f);
-    //back
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book12Thickness, -bookLength + 0.03f);
     glTexCoord2f(_max, _min);
@@ -922,7 +921,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, -bookLength + 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, -bookLength + 0.03f);
-    //right
+
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -933,14 +932,14 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, -bookLength + 0.03f);
 
     glEnd();
-    glPopMatrix();  //4
+    glPopMatrix(); 
 
-    //////////////////pages of book 2///////////////
-    glPushMatrix(); //8
-    glTranslatef(-1.0f, -2.0f + book2Height + bookThickness, 2.0f);// move to lie between covers
+   
+    glPushMatrix(); 
+    glTranslatef(-1.0f, -2.0f + book2Height + bookThickness, 2.0f);
     glRotatef(ang2, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
-    //front
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book12Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -949,7 +948,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, bookLength - 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, bookLength - 0.03f);
-    //back
+
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book12Thickness, -bookLength + 0.03f);
     glTexCoord2f(_max, _min);
@@ -958,7 +957,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, -bookLength + 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, -bookLength + 0.03f);
-    //right
+
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -969,15 +968,14 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight + book12Thickness, -bookLength + 0.03f);
 
     glEnd();
-    glPopMatrix();  //8
+    glPopMatrix(); 
 
-    ///////////////////////////////
-    ///////////pages of book 3
-    glPushMatrix(); //12
-    glTranslatef(-1.0f, -2.0f + book3Height + bookThickness, 2.0f);// move to lie between covers
+ 
+    glPushMatrix();
+    glTranslatef(-1.0f, -2.0f + book3Height + bookThickness, 2.0f);
     glRotatef(ang3, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
-    //front
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book3Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -986,7 +984,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, bookLength - 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book3Thickness, bookLength - 0.03f);
-    //back
+   
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + book3Thickness, -bookLength + 0.03f);
     glTexCoord2f(_max, _min);
@@ -995,7 +993,7 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight, -bookLength + 0.03f);
     glTexCoord2f(_min, _max);
     glVertex3f(bookWidth - 0.03f, bookHeight + book3Thickness, -bookLength + 0.03f);
-    //right
+   
     glTexCoord2f(_min, _min);
     glVertex3f(bookWidth - 0.03f, bookHeight + book3Thickness, bookLength - 0.03f);
     glTexCoord2f(_max, _min);
@@ -1006,9 +1004,11 @@ void pgs() {
     glVertex3f(bookWidth - 0.03f, bookHeight + book3Thickness, -bookLength + 0.03f);
 
     glEnd();
-    glPopMatrix();  //12
+    glPopMatrix();  
 }
 
+
+// 绘制地板阴影对象
 static void FloorShadowObj(void) {
     drawTableTop();
     firstLeg();
@@ -1029,7 +1029,6 @@ static GLfloat floorVertices[4][3] = {
         { -roomSize, -2.0f, -roomSize },
 };
 
-//////////////////////////
 
 static void drawFloor(void) {
     glBegin(GL_QUADS);
@@ -1045,47 +1044,127 @@ static void drawFloor(void) {
 static GLfloat floorPlane[4];
 static GLfloat floorShadow[4][4];
 
-void drawSky() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
 
+void drawSky() {
+    // 启用2D纹理映射
+    glEnable(GL_TEXTURE_2D);
+
+    // 绑定天空纹理（_textureId11 是天空纹理的ID）
     glBindTexture(GL_TEXTURE_2D, _textureId11);
+
+    // 设置纹理参数：缩小和放大时使用线性过滤
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glEnable(GL_BLEND);//turns on alpha blending
+
+    // 启用混合（用于实现透明效果）
+    glEnable(GL_BLEND);
+
+    // 设置混合函数：源颜色乘以源Alpha，目标颜色乘以（1 - 源Alpha）
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // 开始绘制立方体的6个面
+    glBegin(GL_QUADS);
 
-    glBegin(GL_QUADS);//normals pointing inwards
-    glNormal3f(0, 1, 0);
+    float skySize = 100.0f;
+
+    // 前面
+    glNormal3f(0, 0, 1);
     glColor4f(1, 1, 1, 0.6f);
-    glTexCoord2f(0, 0);
-    glVertex3f(-roomSize, 8.0f, -roomSize);
-    glTexCoord2f(1, 0);
-    glVertex3f(roomSize, 8.0f, -roomSize);
-    glTexCoord2f(1, 1);
-    glVertex3f(roomSize, 8.0f, roomSize);
-    glTexCoord2f(0, 1);
-    glVertex3f(-roomSize, 8.0f, roomSize);
+    glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, skySize);
+    glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, skySize);
+    glTexCoord2f(1, 1); glVertex3f(skySize, skySize, skySize);
+    glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, skySize);
+
+    // 后面
+    glNormal3f(0, 0, -1);
+    glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
+    glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, -skySize);
+    glTexCoord2f(1, 1); glVertex3f(skySize, skySize, -skySize);
+    glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, -skySize);
+
+    // 左面
+    glNormal3f(-1, 0, 0);
+    glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
+    glTexCoord2f(1, 0); glVertex3f(-skySize, -skySize, skySize);
+    glTexCoord2f(1, 1); glVertex3f(-skySize, skySize, skySize);
+    glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, -skySize);
+
+    // 右面
+    glNormal3f(1, 0, 0);
+    glTexCoord2f(0, 0); glVertex3f(skySize, -skySize, -skySize);
+    glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, skySize);
+    glTexCoord2f(1, 1); glVertex3f(skySize, skySize, skySize);
+    glTexCoord2f(0, 1); glVertex3f(skySize, skySize, -skySize);
+
+    // 上面
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(0, 0); glVertex3f(-skySize, skySize, -skySize);
+    glTexCoord2f(1, 0); glVertex3f(skySize, skySize, -skySize);
+    glTexCoord2f(1, 1); glVertex3f(skySize, skySize, skySize);
+    glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, skySize);
+
+    // 下面
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
+    glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, -skySize);
+    glTexCoord2f(1, 1); glVertex3f(skySize, -skySize, skySize);
+    glTexCoord2f(0, 1); glVertex3f(-skySize, -skySize, skySize);
 
 
+    // 结束绘制
     glEnd();
+
+    // 禁用纹理映射
     glDisable(GL_TEXTURE_2D);
+
+    // 禁用混合
     glDisable(GL_BLEND);
-
 }
 
-void drawWall() { //enclosing the walls of the room{
-    drawSky();
-    glEnable(GL_TEXTURE_2D);//enabling texture
+void drawWall() { // 绘制房间的墙壁
+    drawSky(); // 绘制天空背景
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
+
+    glBindTexture(GL_TEXTURE_2D, _textureId10); // 绑定纹理ID为_textureId10的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
+
+    glBegin(GL_QUADS); // 开始绘制四边形
+    glNormal3f(0, 1, 0); // 设置法线向量为(0, 1, 0)，用于光照计算
+
+    // 左墙
+    glTexCoord2f(0, 0); // 设置纹理坐标左下角
+    glVertex3f(-roomSize - wll, -2.0f, -roomSize); // 设置顶点坐标
+    glTexCoord2f(5, 0); // 设置纹理坐标右下角
+    glVertex3f(-roomSize - wll, -2.0f, roomSize); // 设置顶点坐标
+    glTexCoord2f(5, 5); // 设置纹理坐标右上角
+    glVertex3f(-roomSize - wll, 8.0f, roomSize); // 设置顶点坐标
+    glTexCoord2f(0, 5); // 设置纹理坐标左上角
+    glVertex3f(-roomSize - wll, 8.0f, -roomSize); // 设置顶点坐标
+
+    // 右墙
+    glTexCoord2f(0, 0); // 设置纹理坐标左下角
+    glVertex3f(roomSize + wll, -2.0f, roomSize); // 设置顶点坐标
+    glTexCoord2f(5, 0); // 设置纹理坐标右下角
+    glVertex3f(roomSize + wll, -2.0f, -roomSize); // 设置顶点坐标
+    glTexCoord2f(5, 5); // 设置纹理坐标右上角
+    glVertex3f(roomSize + wll, 8.0f, -roomSize); // 设置顶点坐标
+    glTexCoord2f(0, 5); // 设置纹理坐标左上角
+    glVertex3f(roomSize + wll, 8.0f, roomSize); // 设置顶点坐标
+
+    glEnd(); // 结束绘制四边形
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
+}
+
+void drawWallM() { 
+    glEnable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, _textureId10);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBegin(GL_QUADS);//normals pointing outwards
+    glBegin(GL_QUADS); 
     glNormal3f(0, 1, 0);
-
-
-    ////left
+    
     glTexCoord2f(0, 0);
     glVertex3f(-roomSize - wll, -2.0f, -roomSize);
     glTexCoord2f(5, 0);
@@ -1094,37 +1173,7 @@ void drawWall() { //enclosing the walls of the room{
     glVertex3f(-roomSize - wll, 8.0f, roomSize);
     glTexCoord2f(0, 5);
     glVertex3f(-roomSize - wll, 8.0f, -roomSize);
-    ////right
-    glTexCoord2f(0, 0);
-    glVertex3f(roomSize + wll, -2.0f, roomSize);
-    glTexCoord2f(5, 0);
-    glVertex3f(roomSize + wll, -2.0f, -roomSize);
-    glTexCoord2f(5, 5);
-    glVertex3f(roomSize + wll, 8.0f, -roomSize);
-    glTexCoord2f(0, 5);
-    glVertex3f(roomSize + wll, 8.0f, roomSize);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-}
-
-void drawWallM() { // enclosing the walls of the room
-    glEnable(GL_TEXTURE_2D);//enabling texture
-
-    glBindTexture(GL_TEXTURE_2D, _textureId10);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBegin(GL_QUADS); // normals pointing outwards
-    glNormal3f(0, 1, 0);
-    ////left
-    glTexCoord2f(0, 0);
-    glVertex3f(-roomSize - wll, -2.0f, -roomSize);
-    glTexCoord2f(5, 0);
-    glVertex3f(-roomSize - wll, -2.0f, roomSize);
-    glTexCoord2f(5, 5);
-    glVertex3f(-roomSize - wll, 8.0f, roomSize);
-    glTexCoord2f(0, 5);
-    glVertex3f(-roomSize - wll, 8.0f, -roomSize);
-    ////right
+   
     glTexCoord2f(0, 0);
     glVertex3f(roomSize + wll, -2.0f, roomSize);
     glTexCoord2f(5, 0);
@@ -1138,80 +1187,77 @@ void drawWallM() { // enclosing the walls of the room
 }
 
 void glasscube() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
 
-    glBindTexture(GL_TEXTURE_2D, _textureId1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glEnable(GL_BLEND);//turns on alpha blending
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBindTexture(GL_TEXTURE_2D, _textureId1); // 绑定纹理ID为_textureId1的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
 
-    glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-    dGlassCube();
-    glDisable(GL_BLEND);
-    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND); // 启用混合（用于透明效果）
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // 设置混合函数
 
+    glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // 设置颜色为半透明白色
+    dGlassCube(); // 调用绘制玻璃立方体的函数
+
+    glDisable(GL_BLEND); // 禁用混合
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
 }
 
 void drawTable() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
 
-    glBindTexture(GL_TEXTURE_2D, _textureId3);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, _textureId3); // 绑定纹理ID为_textureId3的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
 
-    drawTableTop();
-    firstLeg();
-    secondLeg();
-    thirdLeg();
-    fourthLeg();
+    drawTableTop(); // 绘制桌面
+    firstLeg(); // 绘制第一条桌腿
+    secondLeg(); // 绘制第二条桌腿
+    thirdLeg(); // 绘制第三条桌腿
+    fourthLeg(); // 绘制第四条桌腿
 
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
 }
 
 void book1() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
 
-    glBindTexture(GL_TEXTURE_2D, _textureId9);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glBindTexture(GL_TEXTURE_2D, _textureId9); // 绑定纹理ID为_textureId9的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // 设置颜色为不透明白色
 
-    bk1();
+    bk1(); // 调用绘制书本1的函数
 
-    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
 }
-void book1top()
-{
-    glEnable(GL_TEXTURE_2D);//enabling texture
 
-    glBindTexture(GL_TEXTURE_2D, _textureId8);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+void book1top() {
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
 
+    glBindTexture(GL_TEXTURE_2D, _textureId8); // 绑定纹理ID为_textureId8的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // 设置颜色为不透明白色
 
-    glPushMatrix(); //3
-    glTranslatef(-1.0f, -2.0f + book12Thickness, 2.0f);// move up to lie above bottom cover
-    glRotatef(ang1, 0.0f, 1.0f, 0.0f);
-    glBegin(GL_QUADS);
+    glPushMatrix(); // 保存当前矩阵状态
+    glTranslatef(-1.0f, -2.0f + book12Thickness, 2.0f); // 平移书本到指定位置
+    glRotatef(ang1, 0.0f, 1.0f, 0.0f); // 绕Y轴旋转书本
+    glBegin(GL_QUADS); // 开始绘制四边形
 
-    //Top
-    glTexCoord2f(_min, _min);
-    glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
-    glTexCoord2f(_min, _max);
-    glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
-    glTexCoord2f(_max, _max);
-    glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
-    glTexCoord2f(_max, _min);
-    glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
+    // 书本顶部
+    glTexCoord2f(_min, _min); glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
+    glTexCoord2f(_min, _max); glVertex3f(-bookWidth, bookHeight + bookThickness, -bookLength);
+    glTexCoord2f(_max, _max); glVertex3f(bookWidth, bookHeight + bookThickness, -bookLength);
+    glTexCoord2f(_max, _min); glVertex3f(bookWidth, bookHeight + bookThickness, bookLength);
+
+    glEnd(); // 结束绘制四边形
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
+    glPopMatrix(); // 恢复矩阵状态
 }
 
 void book2() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, _textureId5);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1223,19 +1269,19 @@ void book2() {
 }
 
 void book2top() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, _textureId4);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-    glPushMatrix(); //3
-    glTranslatef(-1.0f, -2.0f + book2Height + book12Thickness, 2.0f);// move up to lie above bottom cover
+    glPushMatrix();
+    glTranslatef(-1.0f, -2.0f + book2Height + book12Thickness, 2.0f);
     glRotatef(ang2, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
 
-    //Top
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_min, _max);
@@ -1250,7 +1296,7 @@ void book2top() {
 }
 
 void book3() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, _textureId7);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1262,19 +1308,19 @@ void book3() {
 }
 
 void book3top() {
-    glEnable(GL_TEXTURE_2D);//enabling texture
+    glEnable(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, _textureId6);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-    glPushMatrix(); //3
-    glTranslatef(-1.0f, -2.0f + book3Height + book3Thickness, 2.0f);// move up to lie above bottom cover
+    glPushMatrix();
+    glTranslatef(-1.0f, -2.0f + book3Height + book3Thickness, 2.0f);
     glRotatef(ang3, 0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
 
-    //Top
+    
     glTexCoord2f(_min, _min);
     glVertex3f(-bookWidth, bookHeight + bookThickness, bookLength);
     glTexCoord2f(_min, _max);
@@ -1288,13 +1334,15 @@ void book3top() {
     glPopMatrix();
 }
 
-void pages() { 
-    glEnable(GL_TEXTURE_2D); 
+void pages() {
+    glEnable(GL_TEXTURE_2D); // 启用2D纹理
 
-    glBindTexture(GL_TEXTURE_2D, _textureId2);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    pgs();
-    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, _textureId2); // 绑定纹理ID为_textureId2的纹理
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // 设置纹理缩小过滤器为线性过滤
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // 设置纹理放大过滤器为线性过滤
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // 设置颜色为不透明白色
+
+    pgs(); // 调用绘制书本页面的函数
+
+    glDisable(GL_TEXTURE_2D); // 禁用2D纹理
 }

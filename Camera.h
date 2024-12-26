@@ -1,21 +1,22 @@
-float angle = 0.0f; //actual vector represetnation of camera angle
-float lx = 0.0f, lz = -1.0f; //camera direction vector
-float cx = -1.0f, cy = 1.0f, z = 13.0f; //XZ position of camera
+float angle = 0.0f; //摄像机角度
+float lx = 0.0f, lz = -1.0f; //摄像机方向向量
+float cx = -1.0f, cy = 1.0f, z = 13.0f; //摄像机位置向量
 
 float _angle = 0.0f;
 float _cameraAngle = -30.0f;
 
-//for camera() rotation
+//处理键盘输入
 void handleSpecialKeypress(
-		int key, // key 2 be pressed
+		int key, 
 		int x,
 		int y
 ) {
 	float fraction = 0.8f;
+
+	//根据键盘输入更新摄像机位置向量与方向向量
 	switch (key) {
-		//addition of other keys for movement of camera>> might need for project
-		case GLUT_KEY_LEFT://charachter A
-			angle -= 0.1f;//shift angle by 0.1f in opposite angle then it looks like we are actually looking at positive
+		case GLUT_KEY_LEFT:
+			angle -= 0.1f;
 			lx = sin(angle);
 			lz = -cos(angle);
 			break;
@@ -35,11 +36,12 @@ void handleSpecialKeypress(
 	}
 }
 
+//重新绘制
 void update(int value) {
 	_angle += 1.0f;
 	if (_angle > 360) {
 		_angle -= 360;
 	}
-	glutPostRedisplay();//redraw scene
+	glutPostRedisplay();
 	glutTimerFunc(25, update, 0);
 }
