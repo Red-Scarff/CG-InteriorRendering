@@ -5,171 +5,160 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>  
 #include "body.h"
 #include "Camera.h"
 #include "Shadow.h"
 #include "Light.h"
 #include "Mirror.h"
-
-#include <math.h>      
-
-#ifndef M_PI
-#define M_PI 3.14159265
-#endif
-
+    
 using namespace std;
 
 enum {
-    M_NONE,
-    M_MOTION,
-    M_LIGHT,
-    M_SHADOWS,
-    M_REFLECTION,
-    M_FloorShadowObj,
-    M_STENCIL_REFLECTION,
-    M_STENCIL_SHADOW,
-    M_OFFSET_SHADOW,
-    M_POSITIONAL,
-    M_DIRECTIONAL,
-    M_PERFORMANCE
+    M_NONE,                 // 无操作
+    M_MOTION,               // 控制动画
+    M_LIGHT,                // 控制光源开关
+    M_SHADOWS,              // 控制阴影渲染
+    M_REFLECTION,           // 控制反射
+    M_FloorShadowObj,       // 控制地板阴影物体
+    M_STENCIL_REFLECTION,   // 控制模板反射
+    M_STENCIL_SHADOW,       // 控制模板阴影
+    M_OFFSET_SHADOW,        // 控制阴影偏移
+    M_POSITIONAL,           // 控制点光源
+    M_DIRECTIONAL,          // 控制平行光
+    M_PERFORMANCE           // 控制性能显示
 };
 
+// 窗口大小改变时的回调函数
 void handleResize(int w, int h) {
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-
-    glLoadIdentity();
+    glViewport(0, 0, w, h);  // 设置视口大小
+    glMatrixMode(GL_PROJECTION);  // 切换到投影矩阵
+    glLoadIdentity();  // 重置投影矩阵
     gluPerspective(
-            45.0, //camera angle
-            (double)w / (double)h, //the width to height ratio
-            1.0, //near z clipping coordinate
-            200.0
-    ); // the far z clipping coordinate
+        45.0,  // 相机视角
+        (double)w / (double)h,  // 宽高比
+        1.0,  // 近裁剪面
+        200.0  // 远裁剪面
+    );
 }
 
-void drawAllObjects() {
-    drawTable(); //draw table
-    book1();
-    book1top();
-    book2();
-    book2top();
-    book3();
-    book3top();
-    pages();
-    glasscube();
-    drawWallM();
+void drawItems() {
+    drawTable();  // 绘制桌子
+    book1();      // 绘制书本1
+    book1top();   // 绘制书本1的顶部
+    book2();      // 绘制书本2
+    book2top();   // 绘制书本2的顶部
+    book3();      // 绘制书本3
+    book3top();   // 绘制书本3的顶部
+    pages();      // 绘制书页
+    glasscube();  // 绘制玻璃立方体
+    drawWallM();  // 绘制墙壁
 }
 
 
+// 绘制整个场景
 void drawScene() {
-    // clear information from last draw
+    // 清除上一次绘制的信息
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW); // switch the drawing perspective
-    glLoadIdentity(); // Reset the drawing perspective
+    glMatrixMode(GL_MODELVIEW);  // 切换到模型视图矩阵
+    glLoadIdentity();  // 重置模型视图矩阵
 
-    // Camera (View port)
+    // 设置相机视角
     gluLookAt(cx, cy, z, cx + lx, 1.0f, z + lz, 0.0f, 1.0f, 0.0f);
-    drawMirrors();
-    drawWall();
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    drawMirrors();  // 绘制镜子
+    drawWall();     // 绘制墙壁
 
-    drawAllObjects();
+    glEnable(GL_CULL_FACE);  // 启用面剔除
+    glCullFace(GL_FRONT);    // 剔除正面
 
-    glCullFace(GL_BACK); // draws back afterwards
+    drawItems();  // 绘制物体
 
-    drawAllObjects();
+    glCullFace(GL_BACK);  // 剔除背面
 
-    glDisable(GL_CULL_FACE);
+    drawItems();  // 再次绘制物体
 
-    glFlush();
+    glDisable(GL_CULL_FACE);  // 禁用面剔除
+
+    glFlush();  // 强制刷新OpenGL命令
 
     int start, end;
 
     if (reportSpeed) {
-        start = glutGet(GLUT_ELAPSED_TIME);
+        start = glutGet(GLUT_ELAPSED_TIME);  // 获取当前时间
     }
 
-    /* Reposition the light source. */
+    // 重新定位光源位置
     lightPosition[0] = 20 * cos(lightAngle);
     lightPosition[1] = 20 * sin(lightAngle);
     lightPosition[2] = lightHeight;
     lightPosition[3] = 0.0;
 
-    shadowMatrix(floorShadow, floorPlane, lightPosition);
+    shadowMatrix(floorShadow, floorPlane, lightPosition);  // 计算阴影矩阵
 
     glPushMatrix();
-    /* Perform scene rotations based on user mouse input. */
+    // 根据用户鼠标输入进行场景旋转
     glRotatef(angle2, 1.0, 0.0, 0.0);
     glRotatef(ang, 0.0, 1.0, 0.0);
 
-    /* Tell GL new light source position. */
+    // 设置光源位置
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
     if (renderShadow) {
         if (stencilShadow) {
-            /* Draw the floor with stencil value 3.  This helps us only
-			draw the shadow once per floor pixel (and only on the
-			floor pixels). */
+            // 使用模板值3绘制地板，确保阴影只在地板像素上绘制一次
             glEnable(GL_STENCIL_TEST);
             glStencilFunc(GL_ALWAYS, 3, 0xffffffff);
             glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
         }
     }
 
-    /* Draw "top" of floor.  Use blending to blend in reflection. */
+    // 绘制地板的“顶部”，使用混合来混合反射
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(0.7f, 0.0f, 0.0f, 0.3f);
 
-    drawFloor();
+    drawFloor();  // 绘制地板
     glDisable(GL_BLEND);
 
     if (FloorShadow) {
-        FloorShadowObj();
+        FloorShadowObj();  // 绘制地板阴影物体
     }
 
     if (FloorShadow) {
-        /* Render the projected shadow. */
+        // 渲染投影阴影
         if (stencilShadow) {
-            /* Now, only render where stencil is set above 2 (ie, 3 where
-			the top floor is).  Update stencil with 2 where the shadow
-			gets drawn so we don't redraw (and accidently reblend) the
-			shadow). */
-            glStencilFunc(GL_LESS, 2, 0xffffffff);  /* draw if ==1 */
+            // 只在模板值大于2的地方渲染阴影，并更新模板值
+            glStencilFunc(GL_LESS, 2, 0xffffffff);
             glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
         }
 
-        /* To eliminate depth buffer artifacts, we use polygon offset
-		to raise the depth of the projected shadow slightly so
-		that it does not depth buffer alias with the floor. */
+        // 使用多边形偏移消除深度缓冲伪影
         if (offsetShadow) {
             switch (polygonOffsetVersion) {
-                case EXTENSION:
+            case EXTENSION:
 #ifdef GL_EXT_polygon_offset
-                    glEnable(GL_POLYGON_OFFSET_EXT);
-				break;
+                glEnable(GL_POLYGON_OFFSET_EXT);
+                break;
 #endif
 #ifdef GL_VERSION_1_1
-                    case ONE_DOT_ONE:
-				glEnable(GL_POLYGON_OFFSET_FILL);
-				break;
+            case ONE_DOT_ONE:
+                glEnable(GL_POLYGON_OFFSET_FILL);
+                break;
 #endif
-                case MISSING:
-                    break;
+            case MISSING:
+                break;
             }
         }
 
-        /* Render 50% black shadow color on top of whatever the
-		floor appareance is. */
+        // 在地板上渲染50%黑色阴影
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_LIGHTING);  // Force the 50% black.
+        glDisable(GL_LIGHTING);  // 强制使用50%黑色
         glColor4f(0.0, 0.0, 0.0, 0.5);
 
         glPushMatrix();
-        /* Project the shadow. */
-        glMultMatrixf((GLfloat *)floorShadow);
+        // 投影阴影
+        glMultMatrixf((GLfloat*)floorShadow);
         FloorShadowObj();
         glPopMatrix();
 
@@ -179,17 +168,17 @@ void drawScene() {
         if (offsetShadow) {
             switch (polygonOffsetVersion) {
 #ifdef GL_EXT_polygon_offset
-                case EXTENSION:
-				glDisable(GL_POLYGON_OFFSET_EXT);
-				break;
+            case EXTENSION:
+                glDisable(GL_POLYGON_OFFSET_EXT);
+                break;
 #endif
 #ifdef GL_VERSION_1_1
-                case ONE_DOT_ONE:
-				glDisable(GL_POLYGON_OFFSET_FILL);
-				break;
+            case ONE_DOT_ONE:
+                glDisable(GL_POLYGON_OFFSET_FILL);
+                break;
 #endif
-                case MISSING:
-                    break;
+            case MISSING:
+                break;
             }
         }
         if (stencilShadow) {
@@ -201,7 +190,7 @@ void drawScene() {
     glDisable(GL_LIGHTING);
     glColor3f(1.0, 1.0, 0.0);
 
-    /* Draw a yellow ball at the light source. */
+    // 在光源位置绘制一个黄色球体
     glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
     glutSolidSphere(3.0, 75, 75);
 
@@ -216,56 +205,58 @@ void drawScene() {
         printf("Speed %.3g frames/sec (%d ms)\n", 100.0 / (end - start), end - start);
     }
 
-    glutSwapBuffers(); //sends the 3D scene to screen
+    glutSwapBuffers();  // 将3D场景发送到屏幕
 }
 
+// 控制光源的菜单回调函数
 static void controlLights(int value) {
     switch (value) {
-        case M_NONE:
-            return;
-        case M_MOTION:
-            animation = 1 - animation;
-            if (animation) {
-                glutIdleFunc(idle);
-            }
-            else {
-                glutIdleFunc(NULL);
-            }
-            break;
-        case M_LIGHT:
-            lightSwitch = !lightSwitch;
-            if (lightSwitch) {
-                glEnable(GL_LIGHT0);
-            }
-            else {
-                glDisable(GL_LIGHT0);
-            }
-            break;
+    case M_NONE:
+        return;
+    case M_MOTION:
+        animation = 1 - animation;
+        if (animation) {
+            glutIdleFunc(idle);
+        }
+        else {
+            glutIdleFunc(NULL);
+        }
+        break;
+    case M_LIGHT:
+        lightSwitch = !lightSwitch;
+        if (lightSwitch) {
+            glEnable(GL_LIGHT0);
+        }
+        else {
+            glDisable(GL_LIGHT0);
+        }
+        break;
 
-        case M_SHADOWS:
-            renderShadow = 1 - renderShadow;
-            break;
+    case M_SHADOWS:
+        renderShadow = 1 - renderShadow;
+        break;
 
-        case M_FloorShadowObj:
-            FloorShadow = 1 - FloorShadow;
-            break;
+    case M_FloorShadowObj:
+        FloorShadow = 1 - FloorShadow;
+        break;
 
-        case M_STENCIL_SHADOW:
-            stencilShadow = 1 - stencilShadow;
-            break;
-        case M_OFFSET_SHADOW:
-            offsetShadow = 1 - offsetShadow;
-            break;
-        case M_POSITIONAL:
-            directionalLight = 0;
-            break;
-        case M_DIRECTIONAL:
-            directionalLight = 1;
-            break;
+    case M_STENCIL_SHADOW:
+        stencilShadow = 1 - stencilShadow;
+        break;
+    case M_OFFSET_SHADOW:
+        offsetShadow = 1 - offsetShadow;
+        break;
+    case M_POSITIONAL:
+        directionalLight = 0;
+        break;
+    case M_DIRECTIONAL:
+        directionalLight = 1;
+        break;
     }
     glutPostRedisplay();
 }
 
+// 窗口可见性改变时的回调函数
 static void visible(int vis) {
     if (vis == GLUT_VISIBLE) {
         if (animation)
@@ -277,136 +268,114 @@ static void visible(int vis) {
     }
 }
 
+// 处理键盘输入的回调函数
 void handleKeypress(unsigned char key, int x, int y) {
-    float fraction = 0.1f; //amount to be changed per press action
+    float fraction = 0.1f;  // 移动步长
     switch (key)
     {
-        case 27: //escape key
-            exit(0); //exit the process
-        case 'q':
-            cx = -15.0f;
-            cy = 8.0f;
-            z = 15.0f;
-            lx = +15.0f;
-            lz = -15.0f;
-            drawScene();
-            break;
-        case 'w':
-            cx = 15.0f;
-            cy = 0.0f;
-            z = 15.0f;
-            lx = -15.0f;
-            lz = -15.0f;
-            drawScene();
-            break;
-        case 'e':
-            cx = 15.0f;
-            cy = 8.0f;
-            z = -15.0f;
-            lx = -15.0f;
-            lz = 15.0f;
-            drawScene();
-            break;
-        case 'r':
-            cx = -1.0f;
-            cy = 1.0f;
-            z = 13.0f;
-            lx = 0.0f;
-            lz = -1.0f;
-            drawScene();
-            break;
-        default:
-            cx = -1.0f;
-            cy = 1.0f;
-            z = 13.0f;
-            lx = 0.0f;
-            lz = -1.0f;
-            drawScene();
-            break;
+    case 27:  // ESC键
+        exit(0);  // 退出程序
+    case 'q':
+        cx = -15.0f;
+        cy = 8.0f;
+        z = 15.0f;
+        lx = +15.0f;
+        lz = -15.0f;
+        drawScene();
+        break;
+    case 'w':
+        cx = 15.0f;
+        cy = 0.0f;
+        z = 15.0f;
+        lx = -15.0f;
+        lz = -15.0f;
+        drawScene();
+        break;
+    case 'e':
+        cx = 15.0f;
+        cy = 8.0f;
+        z = -15.0f;
+        lx = -15.0f;
+        lz = 15.0f;
+        drawScene();
+        break;
+    case 'r':
+        cx = -1.0f;
+        cy = 1.0f;
+        z = 13.0f;
+        lx = 0.0f;
+        lz = -1.0f;
+        drawScene();
+        break;
+    default:
+        cx = -1.0f;
+        cy = 1.0f;
+        z = 13.0f;
+        lx = 0.0f;
+        lz = -1.0f;
+        drawScene();
+        break;
     }
 }
 
-static int supportsOneDotOne(void) {
-    const char *version;
-    int major, minor;
-
-    version = (char *)glGetString(GL_VERSION);
-    if (sscanf_s(version, "%d.%d", &major, &minor) == 2)
-        return major >= 1 && minor >= 1;
-    return 0;
-}
-
+// 主函数
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE);
-    glutInitWindowSize(600, 600); //size of window
-    glutCreateWindow("GROUP 5-SCENE 3");
-    initRender(); //initialize rendering
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE);  // 设置显示模式
+    glutInitWindowSize(600, 600);  // 设置窗口大小
+    glutCreateWindow("HomeWork_Room");  // 创建窗口
+    initRender();  // 初始化渲染
 
-    glutDisplayFunc(drawScene);
+    glutDisplayFunc(drawScene);  // 设置绘制回调函数
+    glutVisibilityFunc(visible);  // 设置可见性回调函数
+    glutKeyboardFunc(handleKeypress);  // 设置键盘回调函数
 
-    glutVisibilityFunc(visible);
-
-    glutKeyboardFunc(handleKeypress);
-
+    // 创建菜单
     glutCreateMenu(controlLights);
-    glutAddMenuEntry("Toggle motion", M_MOTION);
-    glutAddMenuEntry("-----------------------", M_NONE);
-    glutAddMenuEntry("Toggle light", M_LIGHT);
+    glutAddMenuEntry("Light_Motion", M_MOTION);
+    glutAddMenuEntry("Light", M_LIGHT);
+    glutAddMenuEntry("Shadows", M_SHADOWS);
+    glutAddMenuEntry("Objects", M_FloorShadowObj);
+    glutAddMenuEntry("shadow stenciling", M_STENCIL_SHADOW);
+    glutAddMenuEntry("shadow offset", M_OFFSET_SHADOW);
 
-    glutAddMenuEntry("Toggle shadows", M_SHADOWS);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);  // 将菜单绑定到右键
 
-    glutAddMenuEntry("Toggle objects", M_FloorShadowObj);
-    glutAddMenuEntry("-----------------------", M_NONE);
+    glEnable(GL_CULL_FACE);  // 启用面剔除
+    glEnable(GL_DEPTH_TEST);  // 启用深度测试
 
-    glutAddMenuEntry("Toggle shadow stenciling", M_STENCIL_SHADOW);
-    glutAddMenuEntry("Toggle shadow offset", M_OFFSET_SHADOW);
-    glutAddMenuEntry("----------------------", M_NONE);
-
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-#ifdef GL_VERSION_1_1
-    if (supportsOneDotOne() && !forceExtension) {
-		polygonOffsetVersion = ONE_DOT_ONE;
-		glPolygonOffset(-2.0, -1.0);
-	}
-	else
-#endif
-
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-
-    glLineWidth(3.0);
+    glLineWidth(3.0);  // 设置线宽
 
     glMatrixMode(GL_PROJECTION);
     gluPerspective(
-            40.0f, // field of view in degree
-            1.0f, // aspect ratio
-            20.0f, // Z near
-            100.0f // Z far
+        40.0f,  // 视角
+        1.0f,   // 宽高比
+        20.0f,  // 近裁剪面
+        100.0f  // 远裁剪面
     );
     glMatrixMode(GL_MODELVIEW);
 
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1f);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);  // 设置光照模型
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);  // 设置光源颜色
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1f);  // 设置光源衰减
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05f);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);  // 启用光源
+    glEnable(GL_LIGHTING);  // 启用光照
 
-    findPlane(floorPlane, floorVertices[1], floorVertices[2], floorVertices[3]);
+    findPlane(floorPlane, floorVertices[1], floorVertices[2], floorVertices[3]);  // 计算地板平面
 
-    glutSpecialFunc(handleSpecialKeypress); // camera rotation
-    glutReshapeFunc(handleResize);
-    glutTimerFunc(25, update, 0);
+    glutSpecialFunc(handleSpecialKeypress);  // 设置特殊键回调函数（用于相机旋转）
+    glutReshapeFunc(handleResize);  // 设置窗口大小改变回调函数
+    glutTimerFunc(25, update, 0);  // 设置定时器回调函数
 
-    cout << "press Q, W, E to change positions of static/directional camera ";
-    cout << "\n ";
-    cout << "press R to come back to default dynamic camera";
-    cout << "\n";
-    cout << "use arrow keys to move default dynamic camera";
-    cout << "\n";
-    cout << "right click to get the menu ";
-    glutMainLoop();
+    // 输出提示信息
+    cout << "按 Q、W、E 键切换静态/定向相机的位置 " << endl;
+
+    cout << "按 R 键返回默认动态相机" << endl;
+
+    cout << "使用方向键移动默认动态相机" << endl;
+
+    cout << "右键点击打开菜单 " << endl;
+    glutMainLoop();  // 进入主循环
     return 0;
 }

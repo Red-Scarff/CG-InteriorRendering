@@ -29,19 +29,19 @@ void drawMirrors() {
 	glBegin(GL_QUADS);
 	//back wall
 	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-Rs, -2.0f, -Rs);
-	glVertex3f(Rs, -2.0f, -Rs);
-	glVertex3f(Rs, 8.0f, -Rs);
-	glVertex3f(-Rs, 8.0f, -Rs);
+	glVertex3f(-roomSize, -2.0f, -roomSize);
+	glVertex3f(roomSize, -2.0f, -roomSize);
+	glVertex3f(roomSize, 8.0f, -roomSize);
+	glVertex3f(-roomSize, 8.0f, -roomSize);
 	glEnd();
 
 	//added on june 5th
 	glBegin(GL_QUADS);
 	////Frontwall
-	glVertex3f(-Rs, 8.0f, Rs);
-	glVertex3f(Rs, 8.0f, Rs);
-	glVertex3f(Rs, -2.0f, Rs);
-	glVertex3f(-Rs, -2.0f, Rs);
+	glVertex3f(-roomSize, 8.0f, roomSize);
+	glVertex3f(roomSize, 8.0f, roomSize);
+	glVertex3f(roomSize, -2.0f, roomSize);
+	glVertex3f(-roomSize, -2.0f, roomSize);
 	glEnd();
 	////////////////////////////////////////////////
 
@@ -61,7 +61,7 @@ void drawMirrors() {
 	for (float k = 2.0f; k < 20; k = k + 2) {
 		// invert image about xy plane
 		glScalef(1.0f, 1.0f, -1.0f);
-		glTranslatef(0.0f, 0.0f, k*Rs);
+		glTranslatef(0.0f, 0.0f, k*roomSize);
 		drawObjectsforMirror();
 	}
 
