@@ -55,7 +55,53 @@ void drawItems() {
     drawWallM();  // 绘制墙壁
 }
 
+void drawSun() {
+    // 定义墙壁的边界
+    const float x_wall_min = -15.01f, x_wall_max = 15.01f; // 与墙壁的实际位置一致
+    const float y_wall_min = -2.0f, y_wall_max = 8.0f;
+    const float z_wall_min = -15.0f, z_wall_max = 15.0f;
 
+    // 检查太阳是否在墙壁范围内
+    if (lightPosition[0] >= x_wall_min && lightPosition[0] <= x_wall_max &&
+        lightPosition[1] >= y_wall_min && lightPosition[1] <= y_wall_max &&
+        lightPosition[2] >= z_wall_min && lightPosition[2] <= z_wall_max) {
+        // 如果在墙壁范围内，则不绘制太阳
+        return;
+    }
+
+    static float pulse = 0.0f;
+    static float pulseSpeed = 0.01f;
+
+    // 更新脉动效果
+    pulse += pulseSpeed;
+    if (pulse > 1.0f || pulse < 0.0f) {
+        pulseSpeed = -pulseSpeed;
+    }
+
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // 绘制光晕
+    for (int i = 1; i <= 3; ++i) {
+        glColor4f(1.0, 0.8, 0.0, 0.2 / i); // 半透明橙色
+        glutSolidSphere(1.5 + i * 0.5, 75, 75); // 进一步缩小光晕半径
+    }
+
+    // 绘制光源
+    glPushMatrix(); // 保存当前矩阵状态
+    glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]); // 平移到光源位置
+
+    float scale = 1.0f + 0.1f * sin(pulse);
+    glScalef(scale, scale, scale);
+    glColor3f(1.0, 0.5 + 0.5 * sin(pulse), 0.0); // 颜色动态变化
+    //glutSolidSphere(3.0, 75, 75);
+
+    glPopMatrix(); // 恢复矩阵状态
+
+    glDisable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+}
 // 绘制整个场景
 void drawScene() {
     // 清除上一次绘制的信息
@@ -65,8 +111,12 @@ void drawScene() {
 
     // 设置相机视角
     gluLookAt(cx, cy, z, cx + lx, 1.0f, z + lz, 0.0f, 1.0f, 0.0f);
+    // 启用雾效
+    enableFog();
     drawMirrors();  // 绘制镜子
-    drawWall();     // 绘制墙壁
+    glDisable(GL_BLEND);
+    drawWall();
+    glEnable(GL_BLEND);
 
     glEnable(GL_CULL_FACE);  // 启用面剔除
     glCullFace(GL_FRONT);    // 剔除正面
@@ -78,6 +128,12 @@ void drawScene() {
     drawItems();  // 再次绘制物体
 
     glDisable(GL_CULL_FACE);  // 禁用面剔除
+    // 更新粒子
+    updateParticles();
+
+    // 渲染粒子
+    drawParticles();
+
 
     glFlush();  // 强制刷新OpenGL命令
 
@@ -91,7 +147,7 @@ void drawScene() {
     lightPosition[0] = 20 * cos(lightAngle);
     lightPosition[1] = 20 * sin(lightAngle);
     lightPosition[2] = lightHeight;
-    lightPosition[3] = 0.0;
+    lightPosition[3] = 1.0;
 
     shadowMatrix(floorShadow, floorPlane, lightPosition);  // 计算阴影矩阵
 
@@ -100,8 +156,9 @@ void drawScene() {
     glRotatef(angle2, 1.0, 0.0, 0.0);
     glRotatef(ang, 0.0, 1.0, 0.0);
 
-    // 设置光源位置
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glDisable(GL_LIGHTING); // 禁用光照
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition); // 设置光源位置
+    glEnable(GL_LIGHTING); // 重新启用光照
 
     if (renderShadow) {
         if (stencilShadow) {
@@ -186,16 +243,8 @@ void drawScene() {
         }
     }
 
-    glPushMatrix();
-    glDisable(GL_LIGHTING);
-    glColor3f(1.0, 1.0, 0.0);
-
-    // 在光源位置绘制一个黄色球体
     glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
-    glutSolidSphere(3.0, 75, 75);
-
-    glEnable(GL_LIGHTING);
-    glPopMatrix();
+    drawSun(); // 绘制美化后的光源
 
     glPopMatrix();
 
@@ -354,20 +403,29 @@ int main(int argc, char* argv[]) {
         100.0f  // 远裁剪面
     );
     glMatrixMode(GL_MODELVIEW);
+    GLfloat globalAmbient[] = { 0.5f, 0.5f, 0.5f, 1.0f }; // 全局环境光
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
 
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);  // 设置光照模型
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);  // 设置光源颜色
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);  // 启用局部观察者模式
+    glDisable(GL_LIGHTING); // 禁用光照
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition); // 设置光源位置
+    glEnable(GL_LIGHTING); // 重新启用光照
     glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1f);  // 设置光源衰减
     glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05f);
     glEnable(GL_LIGHT0);  // 启用光源
     glEnable(GL_LIGHTING);  // 启用光照
+
+
 
     findPlane(floorPlane, floorVertices[1], floorVertices[2], floorVertices[3]);  // 计算地板平面
 
     glutSpecialFunc(handleSpecialKeypress);  // 设置特殊键回调函数（用于相机旋转）
     glutReshapeFunc(handleResize);  // 设置窗口大小改变回调函数
     glutTimerFunc(25, update, 0);  // 设置定时器回调函数
+    // 初始化粒子系统
+    initParticles();
 
+    glutMainLoop();
     // 输出提示信息
     cout << "按 Q、W、E 键切换静态/定向相机的位置 " << endl;
 
@@ -376,6 +434,5 @@ int main(int argc, char* argv[]) {
     cout << "使用方向键移动默认动态相机" << endl;
 
     cout << "右键点击打开菜单 " << endl;
-    glutMainLoop();  // 进入主循环
     return 0;
 }

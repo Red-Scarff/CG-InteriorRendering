@@ -1046,6 +1046,7 @@ static GLfloat floorShadow[4][4];
 
 
 void drawSky() {
+    glDisable(GL_FOG); // 禁用雾效
     // 启用2D纹理映射
     glEnable(GL_TEXTURE_2D);
 
@@ -1119,6 +1120,7 @@ void drawSky() {
 
     // 禁用混合
     glDisable(GL_BLEND);
+    glEnable(GL_FOG); // 重新启用雾效
 }
 
 void drawWall() { // 绘制房间的墙壁
