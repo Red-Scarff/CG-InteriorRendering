@@ -1069,7 +1069,7 @@ void drawSky() {
     float skySize = 100.0f;
 
     // 前面
-    glNormal3f(0, 0, 1);
+    glNormal3f(0, -1, 0);
     glColor4f(1, 1, 1, 0.6f);
     glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, skySize);
     glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, skySize);
@@ -1077,35 +1077,35 @@ void drawSky() {
     glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, skySize);
 
     // 后面
-    glNormal3f(0, 0, -1);
+    
     glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
     glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, -skySize);
     glTexCoord2f(1, 1); glVertex3f(skySize, skySize, -skySize);
     glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, -skySize);
 
     // 左面
-    glNormal3f(-1, 0, 0);
+  
     glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
     glTexCoord2f(1, 0); glVertex3f(-skySize, -skySize, skySize);
     glTexCoord2f(1, 1); glVertex3f(-skySize, skySize, skySize);
     glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, -skySize);
 
     // 右面
-    glNormal3f(1, 0, 0);
+
     glTexCoord2f(0, 0); glVertex3f(skySize, -skySize, -skySize);
     glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, skySize);
     glTexCoord2f(1, 1); glVertex3f(skySize, skySize, skySize);
     glTexCoord2f(0, 1); glVertex3f(skySize, skySize, -skySize);
 
     // 上面
-    glNormal3f(0, 1, 0);
+   
     glTexCoord2f(0, 0); glVertex3f(-skySize, skySize, -skySize);
     glTexCoord2f(1, 0); glVertex3f(skySize, skySize, -skySize);
     glTexCoord2f(1, 1); glVertex3f(skySize, skySize, skySize);
     glTexCoord2f(0, 1); glVertex3f(-skySize, skySize, skySize);
 
     // 下面
-    glNormal3f(0, -1, 0);
+   
     glTexCoord2f(0, 0); glVertex3f(-skySize, -skySize, -skySize);
     glTexCoord2f(1, 0); glVertex3f(skySize, -skySize, -skySize);
     glTexCoord2f(1, 1); glVertex3f(skySize, -skySize, skySize);
