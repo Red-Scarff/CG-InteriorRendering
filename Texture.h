@@ -33,6 +33,7 @@ GLuint _textureId8;
 GLuint _textureId9;
 GLuint _textureId10;
 GLuint _textureId11;
+GLuint _textureId12;
 
 // 初始化渲染的函数
 void initRender() {
@@ -76,6 +77,10 @@ void initRender() {
     Image* image11 = loadBMP("assets/sky.bmp");
     _textureId11 = loadTexture(image11);
     delete image11;
+    Image* image12 = loadBMP("assets/floor.bmp");
+    _textureId12 = loadTexture(image12);
+    delete image12;
+
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);  // 设置背景颜色为白色，透明度为1
 }
